@@ -22,6 +22,12 @@ class SassException extends Exception {
    * @param object object with source code and meta data
    */
   public function __construct($message, $object) {
-    parent::__construct($message . (is_object($object) ? ": {$object->filename}::{$object->line}\nSource: {$object->source}" : ''));
+      if(is_object($object)) {
+          if(is_string($object->filename)) {
+              $message .= ": {$object->filename}::{$object->line}\n";
+          }
+          $message .= 'Source: '.$object->source;
+      }
+      parent::__construct($message);
   }
 }
